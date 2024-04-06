@@ -19,11 +19,11 @@ path.write_text("\n".join(user_response[1:-1]))
 def grade_book_creator(class_test_data):
     for student in class_test_data:
         path_to_student = Path(f"Computer_Programming_2\\Unit_7\\{student.replace(" ", "_")}.txt")    
-        text = f"{student}\n"
+        text = f"Name: {student}\n"
         for key, value in class_test_data[student].items():
             text += f"{key}: {value}\n"
         path_to_student.write_text(text)
-        
+
 def main():
     class_test_data={
         "Billy Bot":{"Test 1":95,"Test 2":90,"Test 3":87},
