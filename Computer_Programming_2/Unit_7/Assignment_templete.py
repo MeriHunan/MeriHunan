@@ -1,11 +1,10 @@
 print("Meri Hunanyan")
 """
 Name: Meri Hunanyan
-Assignment: Unit 7 Homework 1
-Date: 4/5/2024
+Assignment: 
+Date: 
 """
-
-
+#Problem 1
 
 def main() -> None:
     """
