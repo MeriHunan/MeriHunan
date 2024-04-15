@@ -54,11 +54,11 @@ def create_image_string(image_array:list)->str:
             row_string += f"{image_array[row][column]} "
         image_string += f"{row_string.strip()}\n"
     return image_string
-
+print("hello")
 def create_file(image_string:str, file_name:str)->bool:
     # to get your relative path, right click this Python file
     # then click Copy Relative Path
-    path = Path(rf"Computer_Programming_2\\Unit_7\\Smith_test\\{file_name}.pgm")
+    path = Path(rf"Computer_Programming_2\\Unit_7\\Smith_test\\{file_name}.ppm")
     try:
         path.write_text(image_string)
         return True
@@ -70,7 +70,7 @@ def draw_rect(image_array,x, y, rect_height, rect_width, grayLevel):
     '''To be implemented later'''
 
 def main():
-    image_data = initialize_image(20,20,150)
+    image_data = initialize_image(300,200,150)
     image_string = create_image_string(image_data)
     create_file(image_string,"Smith_Test")
 
