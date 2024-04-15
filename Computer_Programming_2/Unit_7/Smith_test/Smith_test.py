@@ -74,9 +74,9 @@ def draw_rect(image_array,x, y, rect_height, rect_width, grayLevel):
         image_array[x-i][y+distance_midpoint] ="0"
     return image_array
 def main():
-    print("ARRHA")
+    #Test commit
     image_data = initialize_image(300,200,150)
-  # print(image_data)
+    print(image_data)
     image_data = draw_rect(image_data,50, 50, 100, 100, 150)
     image_string = create_image_string(image_data)
     create_file(image_string,"Meri_Test")
