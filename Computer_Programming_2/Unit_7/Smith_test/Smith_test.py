@@ -69,6 +69,7 @@ def create_file(image_string:str, file_name:str)->bool:
 def draw_rect(image_array,x, y, rect_height, rect_width, grayLevel):
     distance_midpoint = rect_width // 2
     image_array[x][y+distance_midpoint] = "0"
+    corner_distance_midway = rect_height // 2
     return image_array
 def main():
     image_data = initialize_image(300,200,150)
