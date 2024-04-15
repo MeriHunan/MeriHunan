@@ -54,31 +54,50 @@ def create_image_string(image_array:list)->str:
             row_string += f"{image_array[row][column]} "
         image_string += f"{row_string.strip()}\n"
     return image_string
-print("hello")
+
 def create_file(image_string:str, file_name:str)->bool:
     # to get your relative path, right click this Python file
     # then click Copy Relative Path
-    path = Path(rf"Computer_Programming_2\\Unit_7\\Smith_test\\{file_name}.ppm")
+    path = Path(rf"{file_name}.ppm")
     try:
         path.write_text(image_string)
         return True
-    except FileNotFoundError:
-        print("File cannot be created")
+    except FileNotFoundError as e:
+        print("File cannot be created", e)
         return False
     
 def draw_rect(image_array,x, y, rect_height, rect_width, grayLevel):
+    image_array[x][y] = "0"
     distance_midpoint = rect_width // 2
-    image_array[x][y+distance_midpoint] = "0"
+    x = x + distance_midpoint
     corner_distance_midway = rect_height // 2
-    for i in range(corner_distance_midway):
-        image_array[x-i][y+distance_midpoint] ="0"
+
+    for i in range(corner_distance_midway): # half of vertical line
+        if i > x:
+            x = x + i + 1
+            break
+        image_array[x+i][y] ="0"
+    for i in range(rect_width):
+        if i > y:
+            y = y - i + 1
+            break
+        image_array[x][y + distance_midpoint -i] ="0"
+    for i in range(rect_height):
+        if i + x > 200:
+            x = x - i + 1 + distance_midpoint
+            break
+        image_array[x + i][y] ="0"
+
+        
+
+    
     return image_array
 def main():
-    print("Somthing bad")
+ #   print("Somthing bad")
     #Test commit
     image_data = initialize_image(300,200,150)
 #    print(image_data)
-    image_data = draw_rect(image_data,50, 50, 100, 100, 150)
+    image_data = draw_rect(image_data,50, 50, 50, 100, 150)
     image_string = create_image_string(image_data)
     create_file(image_string,"Meri_Test")
 
