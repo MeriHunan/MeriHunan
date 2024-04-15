@@ -74,7 +74,6 @@ def main():
     print(image_data)
     image_string = create_image_string(image_data)
     create_file(image_string,"Meri_Test")
-    print(image_string)
 
 if __name__ == '__main__':
     main()
