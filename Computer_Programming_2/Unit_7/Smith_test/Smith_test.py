@@ -67,11 +67,15 @@ def create_file(image_string:str, file_name:str)->bool:
         return False
 
 def draw_rect(image_array,x, y, rect_height, rect_width, grayLevel):
-    '''To be implemented later'''
-    
+    image_array[x][y] = "0"
+    image_array[x][y+1] = "0"
+    image_array[x][y+2] = "0"
+    image_array[x][y+3] = "0"
+    return image_array
 def main():
     image_data = initialize_image(300,200,150)
     print(image_data)
+    image_data = draw_rect(image_data,100, 100, 100, 100, 150)
     image_string = create_image_string(image_data)
     create_file(image_string,"Meri_Test")
 
