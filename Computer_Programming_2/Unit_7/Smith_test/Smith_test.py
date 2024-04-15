@@ -68,11 +68,13 @@ def create_file(image_string:str, file_name:str)->bool:
 
 def draw_rect(image_array,x, y, rect_height, rect_width, grayLevel):
     '''To be implemented later'''
-
+    
 def main():
     image_data = initialize_image(300,200,150)
+    print(image_data)
     image_string = create_image_string(image_data)
-    create_file(image_string,"Smith_Test")
+    create_file(image_string,"Meri_Test")
+    print(image_string)
 
 if __name__ == '__main__':
     main()
