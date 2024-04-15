@@ -65,13 +65,16 @@ def create_file(image_string:str, file_name:str)->bool:
     except FileNotFoundError:
         print("File cannot be created")
         return False
-
+    
 def draw_rect(image_array,x, y, rect_height, rect_width, grayLevel):
     distance_midpoint = rect_width // 2
     image_array[x][y+distance_midpoint] = "0"
     corner_distance_midway = rect_height // 2
+    for i in range(corner_distance_midway):
+        image_array[x-i][y+distance_midpoint] ="0"
     return image_array
 def main():
+    print("ARRHA")
     image_data = initialize_image(300,200,150)
     print(image_data)
     image_data = draw_rect(image_data,50, 50, 100, 100, 150)
