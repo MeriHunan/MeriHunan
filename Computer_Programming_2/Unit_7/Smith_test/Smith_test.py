@@ -65,39 +65,36 @@ def create_file(image_string:str, file_name:str)->bool:
     except FileNotFoundError as e:
         print("File cannot be created", e)
         return False
-    
 def draw_rect(image_array,x, y, rect_height, rect_width, grayLevel):
-    image_array[x][y] = "0"
-    distance_midpoint = rect_width // 2
-    x = x + distance_midpoint
-    corner_distance_midway = rect_height // 2
+    half_width = (rect_width - 1) // 2
+    half_height = (rect_height - 1) // 2
+    x, y = x + half_width, y + half_height
 
-    for i in range(corner_distance_midway): # half of vertical line
-        if i > x:
-            x = x + i + 1
-            break
-        image_array[x+i][y] ="0"
-    for i in range(rect_width):
-        if i > y:
-            y = y - i + 1
-            break
-        image_array[x][y + distance_midpoint -i] ="0"
-    for i in range(rect_height):
-        if i + x > 200:
-            x = x - i + 1 + distance_midpoint
-            break
-        image_array[x + i][y] ="0"
-
-        
-
-    
+    for length in range(rect_height):        #going up
+        image_array[y-length][x] = grayLevel
+        if length == rect_height - 1:
+            y = y - length
+    for length in range(rect_width):         #going left
+        image_array[y][x-length] = grayLevel
+        if length == rect_width - 1:
+            x = x - length
+    for length in range(rect_height):
+        image_array[y+length][x] = grayLevel # going down
+        if length == rect_height - 1:
+            y= y + length
+    for length in range(rect_width):         # going right
+        image_array[y][x+length] = grayLevel
+        if length == rect_width - 1:
+            x= x + length
     return image_array
+
 def main():
- #   print("Somthing bad")
+ #   print("/*Somthing bad")
     #Test commit
     image_data = initialize_image(300,200,150)
 #    print(image_data)
-    image_data = draw_rect(image_data,50, 50, 50, 100, 150)
+    image_data = draw_rect(image_data,200, 100, 50, 70, 0)
+
     image_string = create_image_string(image_data)
     create_file(image_string,"Meri_Test")
 
