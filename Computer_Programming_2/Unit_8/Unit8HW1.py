@@ -10,6 +10,7 @@ class vehicle():
         self.wheels = number_wheels
         self.occupants = number_occupants
         self.color = color
+<<<<<<< HEAD
         self.max_occupancy = 5
     def add_n_occupants(self,n:int)-> int:
         if self.occ + n > 5:
@@ -19,6 +20,8 @@ class vehicle():
             self.occ += n
         return self.occ
 
+=======
+>>>>>>> 7c163b54e2f2c79a370afe75ead47c0544267183
 
 def main() -> None:
     """
