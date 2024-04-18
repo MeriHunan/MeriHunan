@@ -11,6 +11,7 @@ class vehicle():
         self.occupants = number_occupants
         self.color = color
         self.max_occupancy = 5
+print("hello")
 
 
 def main() -> None:
