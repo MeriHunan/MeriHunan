@@ -19,11 +19,11 @@ class vehicle():
         
         Intake:
         ---------
-        n(int) - the number occupants are increased by
+            n(int) - the number occupants are increased by
 
         Return:
         ---------
-        int - the new number of occupants
+            int - the new number of occupants
         """
         if self.occupants + n > 5:
             print("Too many people")
