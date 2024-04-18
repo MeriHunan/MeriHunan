@@ -11,8 +11,13 @@ class vehicle():
         self.occupants = number_occupants
         self.color = color
         self.max_occupancy = 5
-print("hello")
-
+    def add_n_occupants(self,n:int)-> int:
+        if self.occ + n > 5:
+            print("Too many people")
+            raise ValueError
+        else:
+            self.occ += n
+        return self.occ
 
 def main() -> None:
     """
