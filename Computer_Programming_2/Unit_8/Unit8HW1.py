@@ -6,7 +6,7 @@ Date:
 """
 #Problem 1
 class vehicle():
-    def __init__(self, number_wheels, number_occupants, color):
+    def __init__(self, number_wheels, number_occupants, color = "black"):
         self.wheels = number_wheels
         self.occupants = number_occupants
         self.color = color
@@ -32,10 +32,11 @@ def main() -> None:
     --------
     None
     """
-    BMW = vehicle(4, 3, "red")
-    print(BMW.color())
-    print(BMW.wheels())
-    print(BMW.occupants())
+    car1 = vehicle(2, 1, "red") # occupants
+    car2 = vehicle(18, 3, "green") # color
+    print(car1.occupants())
+    print(car2.color())
+    print(car1.add_n_occupants(3))
 
 if __name__ == '__main__':
     main()
