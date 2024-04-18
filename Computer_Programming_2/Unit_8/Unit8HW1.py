@@ -35,6 +35,8 @@ def main() -> None:
     """
     BMW = vehicle(4, 3, "red")
     print(BMW.color())
+    print(BMW.wheels())
+    print(BMW.occupants())
 
 if __name__ == '__main__':
     main()
