@@ -58,7 +58,7 @@ def create_image_string(image_array:list)->str:
 def create_file(image_string:str, file_name:str)->bool:
     # to get your relative path, right click this Python file
     # then click Copy Relative Path
-    path = Path(rf".\\MeriHunan\\Computer_Programming_2\\Unit_7\\Unit7_Project1\\{file_name}.ppm")
+    path = Path(rf".\\Computer_Programming_2\\Unit_7\\Unit7_Project1\\{file_name}.ppm")
     print(path)
     try:
         path.write_text(image_string)
@@ -101,6 +101,8 @@ def draw_circle(image_array, ox, oy, radius, grayLevel):
         vflipx = 2 * ox - x
         oflipx = vflipx
         oflipy = hflipy
+        for i in range(x-ox):
+            image_array[y][x+i] = grayLevel
         image_array[y][x] = grayLevel
         image_array[hflipy][hflipx] = grayLevel
         image_array[vflipy][vflipx] = grayLevel
@@ -139,8 +141,10 @@ def main():
     #Test commit
     image_data = initialize_image(300,200,150)
 #    print(image_data)
-    image_data = draw_rect(image_data,200, 100, 50, 70, 0)
-    image_data = draw_circle(image_data, 50, 50, 20, 0)
+    image_data = draw_rect(image_data,150, 110, 70, 140, 0) # Body
+    image_data = draw_circle(image_data, 55, 120, 25, 0) # Head
+    image_data = draw_rect(image_data, 254, 127, 35, 70, 0) # back legs
+    image_data = draw_rect(image_data, 125, 150, 40, 60, 0) # side leg
     image_string = create_image_string(image_data)
     create_file(image_string,"Meri_Test")
 

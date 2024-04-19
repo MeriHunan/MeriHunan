@@ -45,7 +45,7 @@ class Circle:
     def __str__(self):
         return f"Center: ({self.x},{self.y})\nRadius: {self.radius}"
     def __eq__(sef):
-        ref
+        return self.x == point_two.x and self.y == point_two
     def area(self):
         return Circle.pi*self.radius**2
     def circumference(self):
@@ -55,7 +55,13 @@ class Circle:
 def main():
     p = Point(3,4)
     circle_one = Circle(p,5)
+    circle_two = Circle(Point(5,7), 9)
+    circle_three = Circle(Point(5,7), 8)
     print(circle_one)
+    print(circle_two)
+    print(circle_one == circle_two) # True b/c
+
+
 
     
 
