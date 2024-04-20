@@ -101,8 +101,14 @@ def draw_circle(image_array, ox, oy, radius, grayLevel):
         vflipx = 2 * ox - x
         oflipx = vflipx
         oflipy = hflipy
-        for i in range(x-ox):
+        for i in range(abs(x-ox)):
+            hflipy_inside = 2 * oy - (y - i + 1)
+            hflipx_inside = x 
+            vflipx_inside = 2 * ox - (x + i+1)
+            vflipy_inside = y
             image_array[y][x+i] = grayLevel
+            image_array[hflipy_inside][hflipx_inside] = grayLevel
+            image_array[vflipy_inside][vflipx_inside] = grayLevel
         image_array[y][x] = grayLevel
         image_array[hflipy][hflipx] = grayLevel
         image_array[vflipy][vflipx] = grayLevel
