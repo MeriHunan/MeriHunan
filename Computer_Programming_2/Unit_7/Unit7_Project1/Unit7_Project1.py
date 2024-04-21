@@ -58,7 +58,7 @@ def create_image_string(image_array:list)->str:
 def create_file(image_string:str, file_name:str)->bool:
     # to get your relative path, right click this Python file
     # then click Copy Relative Path
-    path = Path(rf".\\Computer_Programming_2\\Unit_7\\Unit7_Project1\\{file_name}.ppm")
+    path = Path(rf".\\MeriHunan\\Computer_Programming_2\\Unit_7\\Unit7_Project1\\{file_name}.ppm")
     print(path)
     try:
         path.write_text(image_string)
@@ -89,7 +89,7 @@ def draw_rect(image_array,x, y, rect_height, rect_width, grayLevel):
             x= x + length
     return image_array
 
-def draw_circle(image_array, ox, oy, radius, grayLevel):
+def draw_circle(image_array, ox, oy, radius, lineColor, follColor):
     top_play = 0
     right_play = 0
     x = ox - radius
@@ -101,18 +101,17 @@ def draw_circle(image_array, ox, oy, radius, grayLevel):
         vflipx = 2 * ox - x
         oflipx = vflipx
         oflipy = hflipy
-        for i in range(abs(x-ox)):
-            hflipy_inside = 2 * oy - (y - i + 1)
-            hflipx_inside = x 
-            vflipx_inside = 2 * ox - (x + i+1)
-            vflipy_inside = y
-            image_array[y][x+i] = grayLevel
-            image_array[hflipy_inside][hflipx_inside] = grayLevel
-            image_array[vflipy_inside][vflipx_inside] = grayLevel
-        image_array[y][x] = grayLevel
-        image_array[hflipy][hflipx] = grayLevel
-        image_array[vflipy][vflipx] = grayLevel
-        image_array[oflipy][oflipx] = grayLevel
+        for xf in range(x, vflipx):
+            yf = y
+            hflipyf = 2 * oy - yf
+            hflipxf = xf
+            image_array[yf][xf] = follColor
+            image_array[hflipyf][hflipxf] = follColor
+
+        image_array[y][x] = lineColor
+        image_array[hflipy][hflipx] = lineColor
+        image_array[vflipy][vflipx] = lineColor
+        image_array[oflipy][oflipx] = lineColor
         upx = x
         upy = y + 1
         rightx = x + 1
@@ -148,7 +147,7 @@ def main():
     image_data = initialize_image(300,200,150)
 #    print(image_data)
     image_data = draw_rect(image_data,150, 110, 70, 140, 0) # Body
-    image_data = draw_circle(image_data, 55, 120, 25, 0) # Head
+    image_data = draw_circle(image_data, 55, 120, 25, 0, 100) # Head
     image_data = draw_rect(image_data, 254, 127, 35, 70, 0) # back legs
     image_data = draw_rect(image_data, 125, 150, 40, 60, 0) # side leg
     image_string = create_image_string(image_data)
