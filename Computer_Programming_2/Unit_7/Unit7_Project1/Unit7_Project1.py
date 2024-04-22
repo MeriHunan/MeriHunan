@@ -65,7 +65,8 @@ def create_file(image_string:str, file_name:str)->bool:
         return True
     except FileNotFoundError as e:
         print("File cannot be created", e)
-        return False
+        return False   
+
 def draw_rect(image_array,x, y, rect_height, rect_width, lineColor, fullColor):
     half_width = (rect_width - 1) // 2
     half_height = (rect_height - 1) // 2
@@ -91,154 +92,161 @@ def draw_rect(image_array,x, y, rect_height, rect_width, lineColor, fullColor):
         if length == rect_width - 1:
             x= x + length
     return image_array
-def circle_outline(image_array, ox, oy, radius, lineColor, fullColor, part_1, part_2, part_3, part_4):
+
+def calculate_circle_upper_left_points(ox, oy, radius):
+    res = []
     x = ox - radius
     y = oy
-    prevy = oy - 1
     while x <= ox:
-        upx = x
-        upy = y + 1
-        rightx = x + 1
-        righty = y
-        vflipy = y
-        vflipx = 2 * ox - x
-        if part_1 != 150:
-            if prevy != y:
-                for xf in range(x, ox):
-                    yf = y
-                    image_array[yf][xf + 1] = fullColor
-            image_array[y][x] = part_1
-        if part_2 != 150:
-            if prevy != y:
-                for xf in range(x, ox):
-                    yf = y
-                    vflipyf = y
-                    vflipxf = 2 * ox - xf
-                    image_array[vflipyf][vflipxf] = fullColor
-            vflipy = y
-            vflipx = 2 * ox - x
-            image_array[vflipy][vflipx] = part_2
-        if part_3 != 150:
-            if prevy != y:
-                for xf in range(x, ox):
-                    yf = y
-                    hflipyf = 2 * oy - yf
-                    hflipxf = xf + 1
-                    image_array[hflipyf][hflipxf] = fullColor
-            hflipy = 2 * oy - y
-            hflipx = x
-            image_array[hflipy][hflipx] = part_3
-        if part_4 != 150:
-            if prevy != y:
-                for xf in range(x, ox):
-                    yf = y
-                    oflipxf =  2 * ox - xf
-                    oflipyf = 2 * oy - yf
-                    image_array[oflipyf][oflipxf] = fullColor
-            oflipx = vflipx
-            oflipy = hflipy
-            image_array[oflipy][oflipx] = part_3
+        res.append((x, y))
 
-        urx = x + 1
-        ury = y + 1
-        up_dist = math.sqrt((upx - ox)**2 + (upy - oy)**2) 
-        right_dist = math.sqrt((rightx - ox)**2 + (righty - oy)**2)
-        ur_dist = math.sqrt((urx - ox)**2 + (ury - oy)**2)
-        up_diff = abs(up_dist - radius)
-        right_diff = abs(right_dist - radius)
-        ur_diff = abs(ur_dist - radius)
+        up_x = x
+        up_y = y + 1
+        right_x = x + 1
+        right_y = y
+        up_right_x = right_x
+        up_right_y = up_y
+
+        up_origin_dist = math.sqrt((up_x - ox)**2 + (up_y - oy)**2) 
+        right_origin_dist = math.sqrt((right_x - ox)**2 + (right_y - oy)**2)
+        up_right_origin_dist = math.sqrt((up_right_x - ox)**2 + (up_right_y - oy)**2)
+        up_origin_diff = abs(up_origin_dist - radius)
+        right_origin_diff = abs(right_origin_dist - radius)
+        up_right_origin_diff = abs(up_right_origin_dist - radius)
         prevy = y     
-        if up_diff < right_diff:
-            if up_diff < ur_diff:
-                x = upx
-                y = upy
+        if up_origin_diff < right_origin_diff:
+            if up_origin_diff < up_right_origin_diff:
+                x = up_x
+                y = up_y
             else:
-                x = urx
-                y = ury
+                x = up_right_x
+                y = up_right_y
         else: 
-            if right_diff < ur_diff:
-                x = rightx
-                y = righty
+            if right_origin_diff < up_right_origin_diff:
+                x = right_x
+                y = right_y
             else:
-                x = urx
-                y = ury
+                x = up_right_x
+                y = up_right_y
+    return res
 
+def upper_left_to_lower_left(x, y, ox, oy):
+    return (x, 2 * oy - y)
+
+def upper_left_to_upper_right(x, y, ox, oy):
+    return (2 * ox - x, y)
+
+def upper_left_to_lower_right(x, y, ox, oy):
+    return (2 * ox - x, 2 * oy - y)
+
+def draw_4_points_and_fill_line(image_array, x, y, ox, oy, line_color, fill_color):
+    upper_left_x = x
+    upper_left_y = y
+    lower_left_x, lower_left_y = upper_left_to_lower_left(x, y, ox, oy)
+    upper_right_x, upper_right_y = upper_left_to_upper_right(x, y, ox, oy)
+    lower_right_x, lower_right_y = upper_left_to_lower_right(x, y, ox, oy)
+    image_array[upper_left_y][upper_left_x] = line_color
+    image_array[lower_left_y][lower_left_x] = line_color
+    image_array[upper_right_y][upper_right_x] = line_color
+    image_array[lower_right_y][lower_right_x] = line_color
+    if fill_color is not None:
+        for lx in range(upper_left_x + 1, upper_right_x):
+            image_array[upper_left_y][lx] = fill_color
+            image_array[lower_left_y][lx] = fill_color
+
+def draw_circle(image_array, **kwargs):
+    ox = kwargs["originx"]
+    oy = kwargs["originy"]
+    radius = kwargs["radius"]
+    line_color = kwargs["line_color"]
+    fill_color = kwargs.get("fill_color", None)
+    prev_y = oy - 1
+    for x, y in calculate_circle_upper_left_points(ox, oy, radius):
+        fill = None
+        if prev_y != y:
+            fill = fill_color
+        draw_4_points_and_fill_line(image_array, x, y, ox, oy, line_color, fill)
+        prev_y = y
     return image_array
-def draw_circle(image_array, ox, oy, radius, lineColor, fullColor):
-    x = ox - radius
-    y = oy
-    prevy = oy - 1
-    while x <= ox:
-        hflipy = 2 * oy - y
-        hflipx = x
-        vflipy = y
-        vflipx = 2 * ox - x
-        oflipx = vflipx
-        oflipy = hflipy
-        if prevy != y:
-            for xf in range(x, vflipx):
-                yf = y
-                hflipyf = 2 * oy - yf
-                hflipxf = xf
-                image_array[yf][xf] = fullColor
-                image_array[hflipyf][hflipxf] = fullColor
 
-        image_array[y][x] = lineColor
-        image_array[hflipy][hflipx] = lineColor
-        image_array[vflipy][vflipx] = lineColor
-        image_array[oflipy][oflipx] = lineColor
-        upx = x
-        upy = y + 1
-        rightx = x + 1
-        righty = y
-        urx = x + 1
-        ury = y + 1
-        up_dist = math.sqrt((upx - ox)**2 + (upy - oy)**2) 
-        right_dist = math.sqrt((rightx - ox)**2 + (righty - oy)**2)
-        ur_dist = math.sqrt((urx - ox)**2 + (ury - oy)**2)
-        up_diff = abs(up_dist - radius)
-        right_diff = abs(right_dist - radius)
-        ur_diff = abs(ur_dist - radius)
-                
-        prevy = y
-        if up_diff < right_diff:
-            if up_diff < ur_diff:
-                x = upx
-                y = upy
+def draw_4_points_and_fill_line_partial(image_array, x, y, ox, oy, line_color, fill_color, ul, ur, ll, lr):
+    upper_left_x = x
+    upper_left_y = y
+    lower_left_x, lower_left_y = upper_left_to_lower_left(x, y, ox, oy)
+    upper_right_x, upper_right_y = upper_left_to_upper_right(x, y, ox, oy)
+    lower_right_x, lower_right_y = upper_left_to_lower_right(x, y, ox, oy)
+    if ul:
+        image_array[upper_left_y][upper_left_x] = line_color
+    if ll:
+        image_array[lower_left_y][lower_left_x] = line_color
+    if ur:
+        image_array[upper_right_y][upper_right_x] = line_color
+    if lr:
+        image_array[lower_right_y][lower_right_x] = line_color
+    if fill_color is not None:
+        if ul or ur:
+            if ul:
+                start = upper_left_x + 1
             else:
-                x = urx
-                y = ury
-        else: 
-            if right_diff < ur_diff:
-                x = rightx
-                y = righty
+                start = ox + 1
+            if ur:
+                stop = upper_right_x
             else:
-                x = urx
-                y = ury
+                stop = ox + 1
+            for lx in range(start, stop):
+                image_array[upper_left_y][lx] = fill_color
+        if ll or lr:
+            if ll:
+                start = lower_left_x + 1
+            else:
+                start = ox + 1
+            if lr:
+                stop = lower_right_x
+            else:
+                stop = ox + 1
+            for lx in range(start, stop):
+                image_array[lower_left_y][lx] = fill_color
 
+def draw_circle_partial(image_array, **kwargs):
+    ox = kwargs["originx"]
+    oy = kwargs["originy"]
+    radius = kwargs["radius"]
+    line_color = kwargs["line_color"]
+    fill_color = kwargs.get("fill_color", None)
+    ul = kwargs.get("ul", False)
+    ur = kwargs.get("ur", False)
+    ll = kwargs.get("ll", False)
+    lr = kwargs.get("lr", False)
+    prev_y = oy - 1
+    for x, y in calculate_circle_upper_left_points(ox, oy, radius):
+        fill = None
+        if prev_y != y:
+            fill = fill_color
+        draw_4_points_and_fill_line_partial(image_array, x, y, ox, oy, line_color, fill, ul, ur, ll, lr)
+        prev_y = y
     return image_array
 
 def main():
  #   print("/*Somthing bad")
     #Test commit
-    image_data = initialize_image(300,200,150)
+    image_data = initialize_image(900,600,150)
 #    print(image_data)
-    image_data = draw_rect(image_data,150, 110, 70, 140, 0, 100) # Body
-    image_data = draw_circle(image_data, 55, 120, 25, 0, 100) # Head
-    image_data = draw_rect(image_data, 254, 127, 35, 70, 0, 100) # back legs
-    image_data = draw_rect(image_data, 125, 140, 35, 55, 0, 100) # side leg
-    image_data = draw_circle(image_data, 45, 115, 5, 0, 225) # Eyes
-    image_data = draw_circle(image_data, 43, 116, 2, 0, 0) # Eyes
-    image_data = circle_outline(image_data, 41, 121, 20, 0, 100, 150, 0, 150, 150) # smile
-    image_data = circle_outline(image_data, 115, 98, 17, 0, 55, 0, 0, 0, 0) # shell / body detail 4
-    image_data = circle_outline(image_data, 183, 98, 17, 0, 55, 0, 0, 0, 0) # smile / body detail 5
-    image_data = circle_outline(image_data, 80, 76, 35, 0, 70, 150, 0, 150, 150)# shell / body detail 1
-    image_data = circle_outline(image_data, 149, 76, 34, 0, 70, 0, 0, 150, 150)# shell / body detail 2
-    image_data = circle_outline(image_data, 218, 76, 35, 0, 70, 0, 150, 150, 150)# shell /  body detail 3
-    image_data = draw_rect(image_data, 125, 150, 18, 55, 0, 120) # side leg detail
-    image_data = draw_rect(image_data, 254, 136, 18, 70, 0, 120) # back leg detail
-    image_data = draw_rect(image_data, 186, 136, 18, 68, 0, 120) # body detail 1
-    image_data = draw_rect(image_data, 89, 136, 18, 19, 0, 120) # body detail 2
+    image_data = draw_rect(image_data, 448, 332, 210, 416, 0, 100) # Body
+    image_data = draw_circle(image_data, originx = 165, originy = 360, radius = 75, line_color = 0, fill_color = 100) # Head
+    image_data = draw_rect(image_data, 761, 383, 107, 212, 0, 100) # back legs
+    image_data = draw_rect(image_data, 375, 420, 105, 165, 0, 100) # side leg
+    image_data = draw_circle(image_data, originx = 135, originy = 345, radius = 15, line_color = 0, fill_color = 225) # Eyes
+    image_data = draw_circle(image_data, originx = 129, originy = 348, radius = 6, line_color = 0, fill_color = 0) # Eyes
+    image_data = draw_circle_partial(image_data, originx = 123, originy = 363, radius = 60, line_color = 0, ur = True) # smile
+    image_data = draw_circle(image_data, originx = 345, originy = 294, radius = 51, line_color = 0, fill_color = 50) # shell / body detail 4
+    image_data = draw_circle(image_data, originx = 549, originy = 294, radius = 51, line_color = 0, fill_color = 50) # smile / body detail 5
+    image_data = draw_circle_partial(image_data, originx = 240, originy = 228, radius = 105, line_color = 0, fill_color = 70, ur = True)# shell / body detail 1
+    image_data = draw_circle_partial(image_data, originx = 447, originy = 228, radius = 102, line_color = 0, fill_color = 70, ul = True, ur = True)# shell / body detail 2
+    image_data = draw_circle_partial(image_data, originx = 654, originy = 228, radius = 105, line_color = 0, fill_color = 70, ul = True)# shell /  body detail 3
+    image_data = draw_rect(image_data, 375, 450, 54, 165, 0, 120) # side leg detail
+    image_data = draw_rect(image_data, 761, 410, 54, 212, 0, 120) # back leg detail
+    image_data = draw_rect(image_data, 556, 410, 54, 199, 0, 120) # body detail 1
+    image_data = draw_rect(image_data, 267, 410, 54, 54, 0, 120) # body detail 2
     image_string = create_image_string(image_data)
     create_file(image_string,"Meri_Test")
 
