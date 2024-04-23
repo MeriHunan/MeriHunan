@@ -56,8 +56,6 @@ def create_image_string(image_array:list)->str:
     return image_string
 
 def create_file(image_string:str, file_name:str)->bool:
-    # to get your relative path, right click this Python file
-    # then click Copy Relative Path
     path = Path(rf".\\MeriHunan\\Computer_Programming_2\\Unit_7\\Unit7_Project1\\{file_name}.ppm")
     print(path)
     try:
