@@ -1,5 +1,15 @@
 from pathlib import Path
 import math
+print("Meri Hunanyan")
+"""
+Name: Meri Hunanyan
+Assignment: Unit 7 project 1
+Date: 4 / 23 / 2024
+"""
+
+
+#In our naming convention the y exes goes up.
+
 def initialize_image(width:int,height:int,grey_scale:int)->list:
     '''
     Initialize the canvas to be the color of grey_scale
@@ -56,8 +66,22 @@ def create_image_string(image_array:list)->str:
     return image_string
 
 def create_file(image_string:str, file_name:str)->bool:
-    # to get your relative path, right click this Python file
-    # then click Copy Relative Path
+    """
+    Creates a .ppm file in the same directory as this file. If the file is not able to get created it will print an error message
+      and return False. If it is able to create it, it will write the given string into it and return True.
+    
+    Parameters:
+    -------------
+        image_string(str) - The contents of the created file
+
+        file_name(str) - The name of the created file
+
+    Return:
+    ----------
+        bool - If the file was able to get created
+    
+    
+    """
     path = Path(rf".\\MeriHunan\\Computer_Programming_2\\Unit_7\\Unit7_Project1\\{file_name}.ppm")
     print(path)
     try:
@@ -73,7 +97,7 @@ def draw_rect(image_array:list,x:int, y:int, rect_height: int, rect_width:int, l
 
     Parameter:
     ------------
-        image_array(list) - The coordinate list that is going to get turned into an image
+        image_array(list) - The coordinate list of the image
 
         x(int) - The x of the center point of the drawn rectangle
 
@@ -234,8 +258,8 @@ def draw_4_points_and_fill_line(image_array: list, x: int, y: int, ox: int, oy: 
 
     Parameter:
     ------------
-        image_array(list) - The coordinate list that is going to get turned into an image
-    
+        image_array(list) - The coordinate list of the image
+
         x(int) - In the computer's perspective the upper left x 
 
         y(int) - In the computer's perspective the upper left y 
@@ -272,11 +296,11 @@ def draw_circle(image_array: list, **kwargs) -> list:
     
     Parameter:
     ------------
-        image_array(list) - The coordinate list that is going to get turned into an image
+        image_array(list) - The coordinate list of the image
 
-        ox(int) - The origin of the circle
+        ox(int) - The origin x of the circle
     
-        oy(int) - The origin of the circle
+        oy(int) - The origin y of the circle
 
         radius(int) - The radius of the circle
 
@@ -302,10 +326,37 @@ def draw_circle(image_array: list, **kwargs) -> list:
         prev_y = y
     return image_array
 
-def draw_4_points_and_fill_line_partial(image_array, x, y, ox, oy, line_color, fill_color, ul, ur, ll, lr):
+def draw_4_points_and_fill_line_partial(image_array:list, x:int, y:int, ox:int, oy:int, line_color:int, fill_color:int, ul:bool, ur:bool, ll:bool, lr:bool) -> None:
     """
+    Draws points and draws a half line from the point to the origin. The number of points drawn is based on the bool value of ul, ur, ll, lr.
+
+    Parameters:
+    ---------------
+        image_array(list) - The coordinate list of the image
+
+        x(int) - The upper left corner coordinate x of the circle
+
+        y(int) - The upper left corner coordinate y of the circle
+
+        ox(int) - The origin x of the circle
+
+        oy(int) - The origin y of the circle
+
+        line_color(int) - The grey level of the line
+
+        fill_color(int) - The grey level of the fill
+
+        ul(bool) - If the upper left side is going to be filled or not
+
+        ur(bool) - If the upper right side is going to be filled or not
+
+        ll(bool) - If the lower left side is going to be filled or not
+
+        lr(bool) - If the lower right side is going to be filled or not
     
-    
+    Return:
+    ----------
+        None
     
     """
     upper_left_x = x
@@ -346,6 +397,35 @@ def draw_4_points_and_fill_line_partial(image_array, x, y, ox, oy, line_color, f
                 image_array[lower_left_y][lx] = fill_color
 
 def draw_circle_partial(image_array, **kwargs):
+    """
+    Draws the circle partially. The bool value of ul, ur, ll, lr decide which circle side is going to be drawn and filled
+    
+    Parameter:
+    ------------
+        image_array(list) - The coordinate list of the image
+
+        ox(int) - The origin x of the circle
+    
+        oy(int) - The origin y of the circle
+
+        radius(int) - The radius of the circle
+
+        line_color(int) - The grey level of the line
+
+        fill_color(int) - The grey level of the fill
+
+        ul(bool) - If the upper left side is going to be filled or not
+
+        ur(bool) - If the upper right side is going to be filled or not
+
+        ll(bool) - If the lower left side is going to be filled or not
+
+        lr(bool) - If the lower right side is going to be filled or not
+
+    Return:
+    --------
+        list - Returns the updated image_array list
+    """
     ox = kwargs["originx"]
     oy = kwargs["originy"]
     radius = kwargs["radius"]
@@ -365,10 +445,18 @@ def draw_circle_partial(image_array, **kwargs):
     return image_array
 
 def main():
- #   print("/*Somthing bad")
-    #Test commit
+    """
+    The space to do all the tests in
+
+    Intake:
+    --------
+    None
+
+    Return:
+    --------
+    None
+    """
     image_data = initialize_image(900,600,150)
-#    print(image_data)
     image_data = draw_rect(image_data, 448, 332, 210, 416, 0, 100) # Body
     image_data = draw_circle(image_data, originx = 165, originy = 360, radius = 75, line_color = 0, fill_color = 100) # Head
     image_data = draw_rect(image_data, 761, 383, 107, 212, 0, 100) # back legs
