@@ -56,19 +56,8 @@ def create_image_string(image_array:list)->str:
     return image_string
 
 def create_file(image_string:str, file_name:str)->bool:
-    """Creates the file and writes image_string in it, returns True. If it doesn't find it then it prints out an error message\
-     and returns false
-     
-    Parameter:
-    ------------
-        image_string(str) - The contents of the created file
-
-        file_name(str) - The name of the file created
-    
-    Return:
-    -----------
-        bool - Whether or not the file creation was successful
-    """
+    # to get your relative path, right click this Python file
+    # then click Copy Relative Path
     path = Path(rf".\\MeriHunan\\Computer_Programming_2\\Unit_7\\Unit7_Project1\\{file_name}.ppm")
     print(path)
     try:
