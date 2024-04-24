@@ -56,8 +56,19 @@ def create_image_string(image_array:list)->str:
     return image_string
 
 def create_file(image_string:str, file_name:str)->bool:
-    # to get your relative path, right click this Python file
-    # then click Copy Relative Path
+    """Creates the file and writes image_string in it, returns True. If it doesn't find it then it prints out an error message\
+     and returns false
+     
+    Parameter:
+    ------------
+        image_string(str) - The contents of the created file
+
+        file_name(str) - The name of the file created
+    
+    Return:
+    -----------
+        bool - Whether or not the file creation was successful
+    """
     path = Path(rf".\\MeriHunan\\Computer_Programming_2\\Unit_7\\Unit7_Project1\\{file_name}.ppm")
     print(path)
     try:
@@ -67,7 +78,30 @@ def create_file(image_string:str, file_name:str)->bool:
         print("File cannot be created", e)
         return False   
 
-def draw_rect(image_array,x, y, rect_height, rect_width, lineColor, fullColor):
+def draw_rect(image_array:list,x:int, y:int, rect_height: int, rect_width:int, lineColor:int, fullColor:int) -> list:
+    """
+    Draws and fills a rectangle in a given grey color. The x and y is in the middle of the drawn rectangle
+
+    Parameter:
+    ------------
+        image_array(list) - The coordinate list that is going to get turned into an image
+
+        x(int) - The x of the center point of the drawn rectangle
+
+        y(int) - The y of the center point of the drawn rectangle
+
+        rect_height(int) - The height of the rectangle
+
+        rect_width(int) - The width of the rectangle
+
+        lineColor(int) - The line grey level of the rectangle
+
+        fullColor(int) - The fill grey level of the rectangle
+    
+    Return:
+    ----------
+        image_array(list) - The coordinate list that is going to get turned into an image
+    """
     half_width = (rect_width - 1) // 2
     half_height = (rect_height - 1) // 2
     x, y = x + half_width, y + half_height
@@ -93,7 +127,22 @@ def draw_rect(image_array,x, y, rect_height, rect_width, lineColor, fullColor):
             x= x + length
     return image_array
 
-def calculate_circle_upper_left_points(ox, oy, radius):
+def calculate_circle_upper_left_points(ox: int, oy: int, radius: int) -> list:
+    """
+    calculates the circles upper left points but from our perspective it will be the lower left point
+    
+    Parameter:
+    -------------
+        ox(int) - The circle's origin's x
+
+        oy(int) - The circle's origin's y
+
+        radius(int) - The radius of the circle
+    
+    Return:
+    -----------
+        list - All of the coordinates for the circle
+    """
     res = []
     x = ox - radius
     y = oy
@@ -130,16 +179,90 @@ def calculate_circle_upper_left_points(ox, oy, radius):
                 y = up_right_y
     return res
 
-def upper_left_to_lower_left(x, y, ox, oy):
+def upper_left_to_lower_left(x:int, y:int, ox:int, oy:int) -> tuple:
+    """
+    Gets the x and y and flips them horizontally. In our perspective it would be the upper left point
+
+    Parameter:
+    -----------
+        x(int) - The x of the point to be flipped
+
+        y(int) - The y of the point to be flipped
+
+        ox(int) - The origin x of the circle
+
+        oy(int) - The origin y of the circle
+    
+    Return:
+    --------
+        tuple - The x and the y of the new point
+    """
     return (x, 2 * oy - y)
 
-def upper_left_to_upper_right(x, y, ox, oy):
+def upper_left_to_upper_right(x:int, y:int, ox:int, oy:int) -> tuple:
+    """
+    Gets the x and y and flips them vertically. In our perspective it would be the upper right point
+
+    Parameter:
+    -----------
+        x(int) - The x of the point to be flipped
+
+        y(int) - The y of the point to be flipped
+
+        ox(int) - The origin x of the circle
+
+        oy(int) - The origin y of the circle
+    
+    Return:
+    --------
+        tuple - The x and the y of the new point
+    """
     return (2 * ox - x, y)
 
-def upper_left_to_lower_right(x, y, ox, oy):
+def upper_left_to_lower_right(x: int, y:int, ox:int, oy:int) -> tuple:
+    """
+    Gets the x and y and flips them on the origin. In our perspective it would be the lower right point
+
+    Parameter:
+    -----------
+        x(int) - The x of the point to be flipped
+
+        y(int) - The y of the point to be flipped
+
+        ox(int) - The origin x of the circle
+
+        oy(int) - The origin y of the circle
+    
+    Return:
+    --------
+        tuple - The x and the y of the new point
+    """
     return (2 * ox - x, 2 * oy - y)
 
-def draw_4_points_and_fill_line(image_array, x, y, ox, oy, line_color, fill_color):
+def draw_4_points_and_fill_line(image_array: list, x: int, y: int, ox: int, oy: int, line_color: int, fill_color: int) -> None:
+    """
+    Draw 4 points and fills line in between two lower points points, right and left
+
+    Parameter:
+    ------------
+        image_array(list) - The coordinate list that is going to get turned into an image
+    
+        x(int) - In the computer's perspective the upper left x 
+
+        y(int) - In the computer's perspective the upper left y 
+        
+        ox(int) - The origin of the circle
+
+        oy(int) - The origin of the circle
+
+        line_color(int) - The greylevel of the the line
+
+        fill_color(int) - The greylevel of the fill
+
+    Return:
+    ----------
+        None
+    """
     upper_left_x = x
     upper_left_y = y
     lower_left_x, lower_left_y = upper_left_to_lower_left(x, y, ox, oy)
@@ -154,7 +277,28 @@ def draw_4_points_and_fill_line(image_array, x, y, ox, oy, line_color, fill_colo
             image_array[upper_left_y][lx] = fill_color
             image_array[lower_left_y][lx] = fill_color
 
-def draw_circle(image_array, **kwargs):
+def draw_circle(image_array: list, **kwargs) -> list:
+    """
+    Draws the circle.
+    
+    Parameter:
+    ------------
+        image_array(list) - The coordinate list that is going to get turned into an image
+
+        ox(int) - The origin of the circle
+    
+        oy(int) - The origin of the circle
+
+        radius(int) - The radius of the circle
+
+        line_color(int) - The grey level of the line
+
+        fill_color(int) - The grey level of the fill
+
+    Return:
+    --------
+        list - Returns the updated image_array list
+    """
     ox = kwargs["originx"]
     oy = kwargs["originy"]
     radius = kwargs["radius"]
@@ -170,6 +314,11 @@ def draw_circle(image_array, **kwargs):
     return image_array
 
 def draw_4_points_and_fill_line_partial(image_array, x, y, ox, oy, line_color, fill_color, ul, ur, ll, lr):
+    """
+    
+    
+    
+    """
     upper_left_x = x
     upper_left_y = y
     lower_left_x, lower_left_y = upper_left_to_lower_left(x, y, ox, oy)
