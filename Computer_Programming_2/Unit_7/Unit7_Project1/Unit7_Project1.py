@@ -1,5 +1,12 @@
+"""
+Name: Smith
+Date: 4/2/24
+File name: sample_image_creator.py
+"""
 from pathlib import Path
 import math
+<<<<<<< HEAD
+=======
 print("Meri Hunanyan")
 """
 Name: Meri Hunanyan
@@ -13,28 +20,43 @@ Date: 4 / 23 / 2024
 def initialize_image(width:int,height:int,grey_scale:int)->list:
     '''
     Initialize the canvas to be the color of grey_scale
+>>>>>>> cfeab5f13aa9242733bd0dfa1175e231c7272a7d
 
-    Parameters
-    ----------
-    width - int: width of the canvas
-    height - int: height of the canvas
-    grey_scale - int: greyness of the pixel from 0 - 255
 
-    Return
-    ------
-    A list containing all of the pixels for the image
+def initialize_image(width:int,height:int,grey_scale:int)->list:
+    return [[grey_scale for col in range(width)] for row in range(height)]
 
+def create_image_string(image_array:list)->str:
     '''
-    
-    '''image_array = []
+    P2
+    2 2
+    255
+    0 0
+    0 0
+    '''
+    height = len(image_array)
+    width = len(image_array[0])
+    image_string = f"P2\n{width} {height}\n255\n"
     for row in range(height):
-        row = []
+        row_string = ""
         for column in range(width):
-            row.append(grey_scale)
-        image_array.append(row)
+            row_string += str(image_array[row][column])+" "
+        image_string += row_string.strip()+"\n"
+    return image_string
 
-    return image_array'''
-    return [[grey_scale for i in range(width)] for j in range(height)]
+def create_file(image_string:str, file_name:str)->bool:
+    path = Path(rf"Period_8\U7_Project_Part1a\{file_name}.pgm")
+    try:
+        path.write_text(image_string)
+        return True
+    except FileNotFoundError:
+        print("File cannot be created - Directory doesn't exist")
+        return False
+
+def draw_rectangle(image_array,rect_top, rect_left, rect_height, rect_width, grayLevel):
+    # to be implemented later
+    return None
+
 
 def create_image_string(image_array:list)->str:
     '''
