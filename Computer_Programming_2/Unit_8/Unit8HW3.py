@@ -16,6 +16,10 @@ class restaurant():
         print(self)
     def open_restaurant(self):
         print(f"{self.restaurant_name} is open")
+    def set_number_served(self, new_number):
+        self.number_served = new_number
+    def increment_number_served(self):
+        self.number_served += 1
 class user():
     def __init__(self, first_name, last_name, describe_yours, gender, birthday,):
         self.first_name = first_name
@@ -23,10 +27,12 @@ class user():
         self.descr = describe_yours
         self.gender = gender
         self.birthday = birthday
+        self.login_attempts = 0
     def describe_user(self):
         print(f'{self.first_name} {self.last_name} is a {self.gender} born on {self.birthday}. The user description is "{self.descr}"')
     def greet_user(self):
         print(f"Hello {self.first_name} {self.last_name}!")
+    def 
 def main() -> None:
     """
     
@@ -66,6 +72,10 @@ def main() -> None:
     # Problem 4
     print(restaurant_n.number_served)
     restaurant_n.number_served = 12
+    print(restaurant_n.number_served)
+    restaurant_n.set_number_served(5)
+    print(restaurant_n.number_served)
+    restaurant_n.increment_number_served()
     print(restaurant_n.number_served)
 if __name__ == '__main__':
     main()
