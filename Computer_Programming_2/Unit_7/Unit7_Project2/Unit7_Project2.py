@@ -7,16 +7,16 @@ from pathlib import Path
 import math
 
 
-def initialize_image(width:int,height:int,grey_scale:int)->list:
-    return [[grey_scale for col in range(width)] for row in range(height)]
+def initialize_image(width:int,height:int,start_color: tuple)->list:
+    return [[start_color[0], start_color[1], start_color[2] for col in range(width)] for row in range(height)]
 
 def create_image_string(image_array:list)->str:
     '''
-    P2
+    P3
     2 2
     255
-    0 0
-    0 0
+    0 0 0 0 0 0
+    0 0 0 0 0 0
     '''
     height = len(image_array)
     width = len(image_array[0])
@@ -29,7 +29,7 @@ def create_image_string(image_array:list)->str:
     return image_string
 
 def create_file(image_string:str, file_name:str)->bool:
-    path = Path(rf"Period_8\U7_Project_Part1a\{file_name}.pgm")
+    path = Path(rf"Period_8\U7_Project_Part1a\{file_name}.ppm")
     try:
         path.write_text(image_string)
         return True
@@ -61,7 +61,7 @@ def create_image_string(image_array:list)->str:
     # get width of array
     width = len(image_array[0])
     # put the header info in the string (P2\width height\255\)
-    image_string += f"P2\n{width} {height}\n255\n"
+    image_string += f"P3\n{width} {height}\n255\n"
     # use a nested for loop to go through array and append
     # info to a string (hint: can use another empty string for the row)
     for row in range(height):
@@ -88,7 +88,7 @@ def create_file(image_string:str, file_name:str)->bool:
     
     
     """
-    path = Path(rf".\\MeriHunan\\Computer_Programming_2\\Unit_7\\Unit7_Project1\\{file_name}.pgm")
+    path = Path(rf".\\MeriHunan\\Computer_Programming_2\\Unit_7\\Unit7_Project2\\{file_name}.ppm")
     print(path)
     try:
         path.write_text(image_string)
@@ -97,7 +97,7 @@ def create_file(image_string:str, file_name:str)->bool:
         print("File cannot be created", e)
         return False   
 
-def draw_rect(image_array:list,x:int, y:int, rect_height: int, rect_width:int, lineColor:int, fullColor:int) -> list:
+def draw_rect(image_array:list,x:int, y:int, rect_height: int, rect_width:int, lineColor:tuple, fullColor:tuple) -> list:
     """
     Draws and fills a rectangle in a given grey color. The x and y is in the middle of the drawn rectangle
 
@@ -124,24 +124,26 @@ def draw_rect(image_array:list,x:int, y:int, rect_height: int, rect_width:int, l
     half_width = (rect_width - 1) // 2
     half_height = (rect_height - 1) // 2
     x, y = x + half_width, y + half_height
+    r, g, b = lineColor
+    r2, g2, b2 = fullColor
     for row in range(rect_height):
         for pixel in range(rect_width):
-            image_array[y-row][x-pixel] = fullColor
+            image_array[y-row][x-pixel], image_array[y-row][x-pixel + 1], image_array[y-row][x-pixel + 2] = r2, g2, b2
 
     for length in range(rect_height):        #going up
-        image_array[y-length][x] = lineColor
+        image_array[y-length][x], image_array[y-length][x+1], image_array[y-length][x + 2] = r, g, b
         if length == rect_height - 1:
             y = y - length
     for length in range(rect_width):         #going left
-        image_array[y][x-length] = lineColor
+        image_array[y][x-length], image_array[y][x-length + 1], image_array[y][x-length + 2] = r, g, b
         if length == rect_width - 1:
             x = x - length
     for length in range(rect_height):
-        image_array[y+length][x] = lineColor # going down
+        image_array[y+length][x], image_array[y+length][x + 1 ], image_array[y+length][x + 2] = r, g, b # going down
         if length == rect_height - 1:
             y= y + length
     for length in range(rect_width):         # going right
-        image_array[y][x+length] = lineColor
+        image_array[y][x+length], image_array[y][x+length + 1], image_array[y][x+length + 2] = r, g, b
         if length == rect_width - 1:
             x= x + length
     return image_array
@@ -332,7 +334,7 @@ def draw_circle(image_array: list, **kwargs) -> list:
         prev_y = y
     return image_array
 
-def draw_4_points_and_fill_line_partial(image_array:list, x:int, y:int, ox:int, oy:int, line_color:int, fill_color:int, ul:bool, ur:bool, ll:bool, lr:bool) -> None:
+def draw_4_points_and_fill_line_partial(image_array:list, x:int, y:int, ox:int, oy:int, line_color: tuple, fill_color: tuple, ul:bool, ur:bool, ll:bool, lr:bool) -> None:
     """
     Draws points and draws a half line from the point to the origin. The number of points drawn is based on the bool value of ul, ur, ll, lr.
 
@@ -348,9 +350,9 @@ def draw_4_points_and_fill_line_partial(image_array:list, x:int, y:int, ox:int, 
 
         oy(int) - The origin y of the circle
 
-        line_color(int) - The grey level of the line
+        line_color(tuple) - The color of the line
 
-        fill_color(int) - The grey level of the fill
+        fill_color(tuple) - The color level of the fill
 
         ul(bool) - If the upper left side is going to be filled or not
 
