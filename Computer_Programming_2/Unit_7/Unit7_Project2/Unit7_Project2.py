@@ -8,11 +8,11 @@ import math
 
 
 def initialize_image(width:int,height:int,start_color: tuple)->list:
-    return [[start_color[0], start_color[1], start_color[2] for col in range(width)] for row in range(height)]
+    return [[start_color for col in range(width)] for row in range(height)]
 
 def create_image_string(image_array:list)->str:
     '''
-    P3
+    P3'
     2 2
     255
     0 0 0 0 0 0
@@ -20,7 +20,7 @@ def create_image_string(image_array:list)->str:
     '''
     height = len(image_array)
     width = len(image_array[0])
-    image_string = f"P2\n{width} {height}\n255\n"
+    image_string = f"P3\n{width} {height}\n255\n"
     for row in range(height):
         row_string = ""
         for column in range(width):
@@ -124,26 +124,24 @@ def draw_rect(image_array:list,x:int, y:int, rect_height: int, rect_width:int, l
     half_width = (rect_width - 1) // 2
     half_height = (rect_height - 1) // 2
     x, y = x + half_width, y + half_height
-    r, g, b = lineColor
-    r2, g2, b2 = fullColor
     for row in range(rect_height):
         for pixel in range(rect_width):
-            image_array[y-row][x-pixel], image_array[y-row][x-pixel + 1], image_array[y-row][x-pixel + 2] = r2, g2, b2
+            image_array[y-row][x-pixel] = fullColor
 
     for length in range(rect_height):        #going up
-        image_array[y-length][x], image_array[y-length][x+1], image_array[y-length][x + 2] = r, g, b
+        image_array[y-length][x] = lineColor
         if length == rect_height - 1:
             y = y - length
     for length in range(rect_width):         #going left
-        image_array[y][x-length], image_array[y][x-length + 1], image_array[y][x-length + 2] = r, g, b
+        image_array[y][x-length] = lineColor
         if length == rect_width - 1:
             x = x - length
     for length in range(rect_height):
-        image_array[y+length][x], image_array[y+length][x + 1 ], image_array[y+length][x + 2] = r, g, b # going down
+        image_array[y+length][x] = lineColor# going down
         if length == rect_height - 1:
             y= y + length
     for length in range(rect_width):         # going right
-        image_array[y][x+length], image_array[y][x+length + 1], image_array[y][x+length + 2] = r, g, b
+        image_array[y][x+length] = lineColor
         if length == rect_width - 1:
             x= x + length
     return image_array
@@ -260,7 +258,7 @@ def upper_left_to_lower_right(x: int, y:int, ox:int, oy:int) -> tuple:
     """
     return (2 * ox - x, 2 * oy - y)
 
-def draw_4_points_and_fill_line(image_array: list, x: int, y: int, ox: int, oy: int, line_color: int, fill_color: int) -> None:
+def draw_4_points_and_fill_line(image_array: list, x: int, y: int, ox: int, oy: int, line_color: tuple, fill_color: tuple) -> None:
     """
     Draw 4 points and fills line in between two lower points points, right and left
 
@@ -312,9 +310,9 @@ def draw_circle(image_array: list, **kwargs) -> list:
 
         radius(int) - The radius of the circle
 
-        line_color(int) - The grey level of the line
+        line_color(tuple) - The color level of the line
 
-        fill_color(int) - The grey level of the fill
+        fill_color(tuple) - The color of the fill
 
     Return:
     --------
@@ -418,9 +416,9 @@ def draw_circle_partial(image_array, **kwargs):
 
         radius(int) - The radius of the circle
 
-        line_color(int) - The grey level of the line
+        line_color(tuple) - The color of the line
 
-        fill_color(int) - The grey level of the fill
+        fill_color(tuple) - The color of the fill
 
         ul(bool) - If the upper left side is going to be filled or not
 
@@ -464,23 +462,23 @@ def main():
     --------
     None
     """
-    image_data = initialize_image(900,600,150)
-    image_data = draw_rect(image_data, 448, 332, 210, 416, 0, 100) # Body
-    image_data = draw_circle(image_data, originx = 165, originy = 360, radius = 75, line_color = 0, fill_color = 100) # Head
-    image_data = draw_rect(image_data, 761, 383, 107, 212, 0, 100) # back legs
-    image_data = draw_rect(image_data, 375, 420, 105, 165, 0, 100) # side leg
-    image_data = draw_circle(image_data, originx = 135, originy = 345, radius = 15, line_color = 0, fill_color = 225) # Eyes
-    image_data = draw_circle(image_data, originx = 129, originy = 348, radius = 6, line_color = 0, fill_color = 0) # Eyes
-    image_data = draw_circle_partial(image_data, originx = 123, originy = 363, radius = 60, line_color = 0, ur = True) # smile
-    image_data = draw_circle(image_data, originx = 345, originy = 294, radius = 51, line_color = 0, fill_color = 50) # shell / body detail 4
-    image_data = draw_circle(image_data, originx = 549, originy = 294, radius = 51, line_color = 0, fill_color = 50) # smile / body detail 5
-    image_data = draw_circle_partial(image_data, originx = 240, originy = 228, radius = 105, line_color = 0, fill_color = 70, ur = True)# shell / body detail 1
-    image_data = draw_circle_partial(image_data, originx = 447, originy = 228, radius = 102, line_color = 0, fill_color = 70, ul = True, ur = True)# shell / body detail 2
-    image_data = draw_circle_partial(image_data, originx = 654, originy = 228, radius = 105, line_color = 0, fill_color = 70, ul = True)# shell /  body detail 3
-    image_data = draw_rect(image_data, 375, 450, 54, 165, 0, 120) # side leg detail
-    image_data = draw_rect(image_data, 761, 410, 54, 212, 0, 120) # back leg detail
-    image_data = draw_rect(image_data, 556, 410, 54, 199, 0, 120) # body detail 1
-    image_data = draw_rect(image_data, 267, 410, 54, 54, 0, 120) # body detail 2
+    image_data = initialize_image(900,600,(0, 0, 0))
+    image_data = draw_rect(image_data, 448, 332, 210, 416, (255, 255, 255), (255, 255, 255)) # Body
+    image_data = draw_circle(image_data, originx = 165, originy = 360, radius = 75, line_color = (255, 255, 255), fill_color = (255, 255, 255)) # Head
+    image_data = draw_rect(image_data, 761, 383, 107, 212, (255, 255, 255), (255, 255, 255)) # back legs
+    image_data = draw_rect(image_data, 375, 420, 105, 165, (255, 255, 255), (255, 255, 255)) # side leg
+    image_data = draw_circle(image_data, originx = 135, originy = 345, radius = 15, line_color = (255, 255, 255), fill_color = (255, 255, 255)) # Eyes
+    image_data = draw_circle(image_data, originx = 129, originy = 348, radius = 6, line_color = (255, 255, 255), fill_color = (255, 255, 255)) # Eyes
+    image_data = draw_circle_partial(image_data, originx = 123, originy = 363, radius = 60, line_color = (255, 255, 255), ur = True) # smile
+    image_data = draw_circle(image_data, originx = 345, originy = 294, radius = 51, line_color = (255, 255, 255), fill_color = (255, 255, 255)) # shell / body detail 4
+    image_data = draw_circle(image_data, originx = 549, originy = 294, radius = 51, line_color = (255, 255, 255), fill_color = (255, 255, 255)) # smile / body detail 5
+    image_data = draw_circle_partial(image_data, originx = 240, originy = 228, radius = 105, line_color = (255, 255, 255), fill_color = (255, 255, 255), ur = True)# shell / body detail 1
+    image_data = draw_circle_partial(image_data, originx = 447, originy = 228, radius = 102, line_color = (255, 255, 255), fill_color = (255, 255, 255), ul = True, ur = True)# shell / body detail 2
+    image_data = draw_circle_partial(image_data, originx = 654, originy = 228, radius = 105, line_color = (255, 255, 255), fill_color = (255, 255, 255), ul = True)# shell /  body detail 3
+    image_data = draw_rect(image_data, 375, 450, 54, 165, (255, 255, 255), (255, 255, 255)) # side leg detail
+    image_data = draw_rect(image_data, 761, 410, 54, 212, (255, 255, 255), (255, 255, 255)) # back leg detail
+    image_data = draw_rect(image_data, 556, 410, 54, 199, (255, 255, 255), (255, 255, 255)) # body detail 1
+    image_data = draw_rect(image_data, 267, 410, 54, 54, (255, 255, 255), (255, 255, 255)) # body detail 2
     image_string = create_image_string(image_data)
     create_file(image_string,"Meri_Test")
 
