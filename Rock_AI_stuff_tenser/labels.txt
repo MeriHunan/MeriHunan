@@ -1,4 +1,4 @@
 0 Green Jasper
 1 Red Jasper
 2 Grey Jasper
-3 Yellow / orange Jasper
+3 Yellow Jasper

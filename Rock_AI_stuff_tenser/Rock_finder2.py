@@ -37,6 +37,7 @@ class InfoWidget(QWidget):
         super().__init__()
         layout = QVBoxLayout()
         self.progressBars = []
+        self.dataExists = False
         for i in range(10):#            Creating 10 hidden progress bars
             progress = QProgressBar()
             progress.setAlignment(Qt.AlignmentFlag.AlignCenter)
@@ -50,12 +51,12 @@ class InfoWidget(QWidget):
         self.setSizePolicy(sizePolicy)
 
     def sizeHint(self):
-        for progress in self.progressBars:
-            if progress.isVisible():
-                return QSize(150, 100)
+        if self.dataExists:
+            return QSize(200, 100)
         return QSize(0, 100)
 
     def setInfo(self, indexes, class_names, prediction):
+        self.dataExists = True
         for progress in self.progressBars:
             progress.setVisible(False)
 
@@ -76,12 +77,11 @@ class InfoWidget(QWidget):
             if idx == len(self.progressBars):
                 break
 
-
 class MainWindow(QWidget):
     def __init__(self):
         super().__init__()
         self.pixmap = None
-        self.resize(400, 400)
+        self.resize(600, 600)
         self.setAcceptDrops(True)
 
         mainLayout = QHBoxLayout()
