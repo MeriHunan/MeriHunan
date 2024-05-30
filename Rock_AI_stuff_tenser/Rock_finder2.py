@@ -8,14 +8,6 @@ from PyQt5.QtGui import QPixmap
 import os, re
 from PyQt5 import QtCore
 
-print("hello")
-def above_10(list):
-    above = []
-    for per in list[0]:
-        if per <= 0.10:
-            above.append(list.index(per))
-    return(above)
-
 
 class ImageLabel(QLabel):
     def __init__(self):
@@ -118,10 +110,10 @@ class MainWindow(QWidget):
             np.set_printoptions(suppress=True)
 
             # Load the model
-            model = load_model("MeriHunan\\Rock_AI_stuff_tenser\\keras_model.h5", compile=False)
+            model = load_model("Rock_AI_stuff_tenser\\keras_model.h5", compile=False)
 
             # Load the labels
-            class_names = open("MeriHunan\\Rock_AI_stuff_tenser\\labels.txt", "r").readlines()
+            class_names = open("Rock_AI_stuff_tenser\labels.txt", "r").readlines()
 
             # Create the array of the right shape to feed into the keras model
             # The 'length' or number of images you can put into the array is
