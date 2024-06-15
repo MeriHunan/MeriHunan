@@ -7,21 +7,90 @@ Date:
 
 class restaurant():
     def __init__(self, restaurant_name, cuisine_type, number_served = 0):
+        """
+        The constructor
+
+        Input:
+            restaurant_name(str) - The restaurant name
+            cuisine_type(str) - The cuisine of the restaurant
+            number_served(int) - The number of people served. Default is 0
+        Output:
+            None
+        """
         self.restaurant_name = restaurant_name
         self.cuisine_type = cuisine_type
         self.number_served = number_served
     def __str__(self):
+        """
+        Runs when print is called and the resault is a print message containing restaurant_name and cusine_type
+        
+        Input:
+            None
+
+        Ouput:
+            str - The print message
+        """
         return f'The name of the {self.cuisine_type} restaurant is "{self.restaurant_name}"'
     def describe_restaurant(self):
+        """
+        This function prints a message containing restaurant_name and cusine_type
+        
+        Input:
+            None
+
+        Ouput:
+            None
+        """
         print(self)
     def open_restaurant(self):
+        """
+        Prints a message telling that the restaurant is open
+        
+        Input:
+            None
+
+        Ouput:
+            None
+        """
         print(f"{self.restaurant_name} is open")
     def set_number_served(self, new_number):
+        """
+        Sets number_served to the given number
+
+        Input:
+            new_number(int) - The number we are going to set number_served to
+
+        Output:
+            None
+        """
         self.number_served = new_number
     def increment_number_served(self):
+        """
+        Adds one to number_served
+
+        Input:
+            None
+
+        Output:
+            None
+        """
         self.number_served += 1
 class user():
     def __init__(self, first_name, last_name, describe_yours, gender, birthday):
+        """
+        The constructor
+
+        Input:
+            self - self
+            first_name(str) - User's first name
+            last_name(str) - User's last name
+            describe_yours(str) - User's description of themselves
+            gender(str) - User's gender
+            birthday(str) - User's birthday
+        
+        Output:
+            None
+        """
         self.first_name = first_name
         self.last_name = last_name
         self.descr = describe_yours
@@ -29,16 +98,48 @@ class user():
         self.birthday = birthday
         self.login_attempts = 0
     def describe_user(self):
+        """
+        Prints a personalized message containing all attributes except login_attempts
+
+        Input:
+            None
+
+        Output:
+            None
+        """
         print(f'{self.first_name} {self.last_name} is a {self.gender} born on {self.birthday}. The user description is "{self.descr}"')
     def greet_user(self):
+        """
+        Prints hello "first_name" "last name"
+        
+        Input:
+            None
+
+        Output:
+            None
+        """
         print(f"Hello {self.first_name} {self.last_name}!")
-    def set_number_served(self, new_number):
-        self.number_served = new_number
-    def increment_number_served(self):
-        self.number_served += 1
     def increment_login_attempts(self):
+        """
+        Adds one to login_attempts
+        
+        Input: 
+            None
+
+        Output:
+            None
+        """
         self.login_attempts += 1
     def reset_login_attemps(self):
+        """
+        Resets login_attempts to 0
+        
+        Input: 
+            None
+
+        Output:
+            None
+        """
         self.login_attempts = 0
 
 
